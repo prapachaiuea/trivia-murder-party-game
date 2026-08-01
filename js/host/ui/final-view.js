@@ -1,3 +1,6 @@
+import { getState } from "../state.js";
+import { backToLobby } from "../game.js";
+import { showToast } from "../../shared/components.js";
 import { renderCandle } from "./candle.js";
 
 let initialized = false;
@@ -6,8 +9,16 @@ export function init() {
   if (initialized) return;
   initialized = true;
 
-  document.getElementById("btn-new-game").addEventListener("click", () => {
-    window.location.reload();
+  document.getElementById("btn-new-game").addEventListener("click", async (e) => {
+    const { roomId } = getState();
+    e.target.disabled = true;
+    try {
+      await backToLobby(roomId);
+    } catch {
+      showToast("Could not start a new game — check your connection.", true);
+    } finally {
+      e.target.disabled = false;
+    }
   });
 }
 

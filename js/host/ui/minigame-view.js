@@ -9,8 +9,9 @@ export function init() {
   if (initialized) return;
   initialized = true;
 
-  document.getElementById("btn-reveal-fate").addEventListener("click", async () => {
+  document.getElementById("btn-reveal-fate").addEventListener("click", async (e) => {
     const { roomId, public: pub } = getState();
+    e.target.disabled = true;
     try {
       if (pub?.fateRevealed) {
         await finishMinigameRound(roomId);
@@ -19,6 +20,8 @@ export function init() {
       }
     } catch {
       showToast("Could not continue.", true);
+    } finally {
+      e.target.disabled = false;
     }
   });
 

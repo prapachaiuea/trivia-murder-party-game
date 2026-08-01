@@ -118,3 +118,28 @@ export async function proceedAfterRoundEnd(roomId) {
     await startRound(roomId);
   }
 }
+
+// "New Game" previously just called location.reload(), which reconnects to the SAME room —
+// still sitting in phase:'final' — so it silently reloaded back onto the finished scoreboard
+// instead of actually starting anything new. Worse here than in the other games: startRound()
+// only seeds a fresh STARTING_LIVES entry for uids that don't already have one, so without
+// nulling lives, a second game would begin with last game's eliminated players still at 0
+// lives. lives/answers/minigameResults all have parent-level write rules for the host (see
+// firebase-rules.json), so nulling each directly here is safe. totalRounds and
+// usedQuestionIndices are deliberately left alone: the question-count setting should persist,
+// and keeping the used-question history means a second game with the same group won't
+// immediately repeat trivia from the first one.
+export async function backToLobby(roomId) {
+  await set(ref(db, `rooms/${roomId}/lives`), null);
+  await set(ref(db, `rooms/${roomId}/answers`), null);
+  await set(ref(db, `rooms/${roomId}/minigameResults`), null);
+  await update(ref(db, `rooms/${roomId}/public`), {
+    phase: "lobby",
+    roundNumber: 0,
+    questionIndex: null,
+    atRiskUids: null,
+    timer: null,
+    minigameStartAt: null,
+    fateRevealed: false,
+  });
+}

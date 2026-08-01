@@ -12,14 +12,17 @@ export function init() {
 
   loadTrivia().then((data) => { trivia = data; });
 
-  document.getElementById("btn-start-minigame").addEventListener("click", async () => {
+  document.getElementById("btn-start-minigame").addEventListener("click", async (e) => {
     const { roomId, public: pub } = getState();
     const hasAtRisk = Boolean(pub?.atRiskUids);
+    e.target.disabled = true;
     try {
       if (hasAtRisk) await startMinigame(roomId);
       else await skipMinigame(roomId);
     } catch {
       showToast("Could not continue.", true);
+    } finally {
+      e.target.disabled = false;
     }
   });
 }

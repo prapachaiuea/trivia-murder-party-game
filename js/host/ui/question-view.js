@@ -14,12 +14,15 @@ export function init() {
 
   loadTrivia().then((data) => { trivia = data; });
 
-  document.getElementById("btn-skip-question").addEventListener("click", async () => {
+  document.getElementById("btn-skip-question").addEventListener("click", async (e) => {
     const { roomId } = getState();
+    e.target.disabled = true;
     try {
       await advanceToReveal(roomId);
     } catch {
       showToast("Could not reveal the answer.", true);
+    } finally {
+      e.target.disabled = false;
     }
   });
 
