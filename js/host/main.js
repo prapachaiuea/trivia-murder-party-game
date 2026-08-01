@@ -1,0 +1,41 @@
+import { initAuth } from "../shared/auth.js";
+import { getState, setState, subscribe } from "./state.js";
+import { rejoinLastRoom } from "./room.js";
+import { renderRoute } from "./router.js";
+import { watchServerOffset } from "../shared/utils/timer.js";
+import { showToast } from "../shared/components.js";
+
+import * as setupView from "./ui/setup-view.js";
+import * as lobbyView from "./ui/lobby-view.js";
+import * as questionView from "./ui/question-view.js";
+import * as revealView from "./ui/reveal-view.js";
+import * as minigameView from "./ui/minigame-view.js";
+import * as roundEndView from "./ui/round-end-view.js";
+import * as finalView from "./ui/final-view.js";
+
+const views = [setupView, lobbyView, questionView, revealView, minigameView, roundEndView, finalView];
+
+async function boot() {
+  views.forEach((v) => v.init());
+  subscribe((state) => {
+    renderRoute(state);
+    views.forEach((v) => v.render(state));
+  });
+  renderRoute(getState());
+
+  watchServerOffset();
+
+  try {
+    const uid = await initAuth();
+    setState({ uid });
+    await rejoinLastRoom();
+  } catch (err) {
+    console.error(err);
+    showToast("Failed to connect to Firebase — check firebase-config.js.", true);
+  }
+}
+
+boot().catch((err) => {
+  console.error(err);
+  showToast("Failed to connect. Check your Firebase config and connection.", true);
+});

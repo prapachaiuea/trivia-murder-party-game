@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Murder Party</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="player.css" />
+</head>
+<body>
+  <header class="seat-header">
+    <a class="menu-link" href="index.html">&larr; Menu</a>
+    <h1 class="seat-wordmark">trivia murder party</h1>
+    <p class="room-code" id="room-code-display" hidden>Room <strong id="room-code-value"></strong></p>
+  </header>
+
+  <main id="app">
+    <section id="view-landing" class="view">
+      <form id="form-landing">
+        <label>
+          Your name
+          <input id="input-name" type="text" maxlength="20" required autocomplete="off" placeholder="e.g. Beam" />
+        </label>
+        <p id="landing-join-row" class="hint" hidden>Joining room <strong id="landing-room-code"></strong></p>
+        <div id="landing-code-row" class="field-code">
+          <label>
+            Room code
+            <input id="input-room-code" type="text" maxlength="5" autocomplete="off" placeholder="BLUE2" style="text-transform:uppercase" required />
+          </label>
+        </div>
+        <button type="submit" class="btn-seat">Take Your Seat</button>
+      </form>
+      <p class="error-text" id="landing-error" hidden></p>
+    </section>
+
+    <section id="view-lobby" class="view" hidden>
+      <p class="seat-status">You're seated. Waiting for the show to begin&hellip;</p>
+      <ul id="player-list" class="chip-list"></ul>
+    </section>
+
+    <section id="view-question" class="view" hidden>
+      <div id="question-active">
+        <p class="seat-eyebrow">Answer correctly, or gamble your life</p>
+        <h2 class="question-text" id="my-question"></h2>
+        <div class="answer-options" id="answer-options"></div>
+      </div>
+      <div id="question-answered" hidden>
+        <p class="seat-status">Answer locked in.</p>
+        <p class="seat-hint">Watch the big screen for the reveal.</p>
+      </div>
+      <div id="question-eliminated" hidden>
+        <p class="seat-status">You're out of lives.</p>
+        <p class="seat-hint">Watch the show as a spectator.</p>
+      </div>
+    </section>
+
+    <section id="view-reveal" class="view" hidden>
+      <p class="seat-status" id="reveal-result-text"></p>
+      <p class="seat-hint" id="reveal-result-hint"></p>
+    </section>
+
+    <section id="view-minigame" class="view" hidden>
+      <div id="minigame-at-risk">
+        <p class="seat-eyebrow">Tap the circle the instant it turns green</p>
+        <div class="tap-zone" id="tap-zone">
+          <div class="tap-circle" id="tap-circle"></div>
+        </div>
+        <p class="tap-status" id="tap-status">Get ready&hellip;</p>
+      </div>
+      <div id="minigame-spectator" hidden>
+        <p class="seat-status">You answered correctly.</p>
+        <p class="seat-hint">Watch the others fight for their lives.</p>
+      </div>
+      <div id="minigame-eliminated" hidden>
+        <p class="seat-status">You're out of lives.</p>
+        <p class="seat-hint">Watch the show as a spectator.</p>
+      </div>
+    </section>
+
+    <section id="view-round-end" class="view" hidden>
+      <p class="seat-status">Check the big screen for the tally.</p>
+      <p class="my-lives" id="my-lives"></p>
+    </section>
+
+    <section id="view-final" class="view" hidden>
+      <p class="seat-eyebrow">The show is over</p>
+      <p class="my-lives" id="final-lives"></p>
+      <p class="seat-hint">Thanks for playing &mdash; look up for the final results.</p>
+    </section>
+  </main>
+
+  <p id="toast" class="toast" hidden></p>
+
+  <script type="module" src="js/player/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "rooms": {
+      "$roomId": {
+        "public": {
+          ".read": "auth != null",
+          ".write": "auth != null && (!data.child('host').exists() || auth.uid === data.child('host').val())"
+        },
+        "players": {
+          ".read": "auth != null",
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && (data.exists() || root.child('rooms').child($roomId).child('public/phase').val() === 'lobby')"
+          }
+        },
+        "lives": {
+          ".read": "auth != null",
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()"
+        },
+        "answers": {
+          ".read": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
+          "$uid": {
+            ".read": "auth != null && (auth.uid === $uid || auth.uid === root.child('rooms').child($roomId).child('public/host').val())",
+            ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('public/phase').val() === 'question'"
+          }
+        },
+        "minigameResults": {
+          ".read": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
+          "$uid": {
+            ".read": "auth != null && (auth.uid === $uid || auth.uid === root.child('rooms').child($roomId).child('public/host').val())",
+            ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('public/phase').val() === 'minigame' && root.child('rooms').child($roomId).child('public/atRiskUids').child($uid).val() === true && (newData.val() === 'pass' || newData.val() === 'fail')"
+          }
+        }
+      }
+    }
+  }
+}

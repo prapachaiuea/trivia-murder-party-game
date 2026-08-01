@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Murder Party &mdash; The Show</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="host.css" />
+</head>
+<body>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header class="stage-header">
+    <a class="menu-link" href="index.html">&larr; Menu</a>
+    <h1 class="wordmark">TRIVIA MURDER PARTY</h1>
+    <p class="room-code" id="room-code-display" hidden>Room <strong id="room-code-value"></strong></p>
+  </header>
+
+  <main id="app">
+    <section id="view-setup" class="view">
+      <p class="stage-tagline">Answer wrong and you'll have to survive to stay in the game.</p>
+      <button id="btn-create-room" type="button" class="btn-primary">Open the Show</button>
+      <p class="error-text" id="setup-error" hidden></p>
+    </section>
+
+    <section id="view-lobby" class="view" hidden>
+      <p class="stage-instruction">Players join at <strong id="join-hint"></strong> using this code</p>
+      <div class="room-code-big" id="lobby-room-code"></div>
+      <ul id="player-list" class="candle-row"></ul>
+      <label class="rounds-picker">
+        Questions
+        <select id="select-total-rounds">
+          <option value="5">5</option>
+          <option value="8" selected>8</option>
+          <option value="12">12</option>
+        </select>
+      </label>
+      <p id="lobby-hint" class="stage-hint"></p>
+      <button id="btn-start-game" type="button" class="btn-primary" hidden>Begin the Show</button>
+    </section>
+
+    <section id="view-question" class="view" hidden>
+      <p class="case-number" id="question-round-number"></p>
+      <div class="countdown" id="question-countdown">0:15</div>
+      <h2 class="question-text" id="question-text"></h2>
+      <ol class="option-list" id="option-list"></ol>
+      <ul id="question-status-list" class="chip-row"></ul>
+      <button id="btn-skip-question" type="button" class="btn-ghost">Everyone's Answered &mdash; Reveal</button>
+    </section>
+
+    <section id="view-reveal" class="view" hidden>
+      <p class="stage-eyebrow">The correct answer was&hellip;</p>
+      <h2 class="question-text" id="reveal-answer"></h2>
+      <ul id="reveal-status-list" class="chip-row"></ul>
+      <p class="stage-hint" id="reveal-hint"></p>
+      <button id="btn-start-minigame" type="button" class="btn-primary"></button>
+    </section>
+
+    <section id="view-minigame" class="view" hidden>
+      <p class="stage-eyebrow">Survive&hellip; or else</p>
+      <h2 class="minigame-status" id="minigame-status">Get ready</h2>
+      <ul id="minigame-status-list" class="chip-row"></ul>
+      <button id="btn-reveal-fate" type="button" class="btn-primary"></button>
+    </section>
+
+    <section id="view-round-end" class="view" hidden>
+      <h2 class="section-title">Who's Still Breathing?</h2>
+      <ol id="candle-tally" class="candle-row candle-row-big"></ol>
+      <button id="btn-proceed" type="button" class="btn-primary" hidden></button>
+    </section>
+
+    <section id="view-final" class="view" hidden>
+      <p class="stage-eyebrow">The Show Is Over</p>
+      <h2 class="winner-name" id="winner-name"></h2>
+      <ol id="final-candle-row" class="candle-row candle-row-big"></ol>
+      <button id="btn-new-game" type="button" class="btn-primary">New Show</button>
+    </section>
+  </main>
+
+  <p id="toast" class="toast" hidden></p>
+
+  <script type="module" src="js/host/main.js"></script>
+</body>
+</html>
