@@ -1,7 +1,13 @@
 import { loadTrivia } from "../../shared/trivia.js";
+import { playSuccess, playFail } from "../../shared/audio.js";
 
 let initialized = false;
 let trivia = [];
+
+// Tracks which round the correct/wrong sound has already played for — render() fires on
+// every state change, not just the reveal transition, so without this the cue would repeat
+// on unrelated updates (another player's lives changing, etc.) while this screen is showing.
+let announcedForRound = null;
 
 export function init() {
   if (initialized) return;
@@ -10,7 +16,10 @@ export function init() {
 }
 
 export function render(state) {
-  if (state.phase !== "reveal") return;
+  if (state.phase !== "reveal") {
+    announcedForRound = null;
+    return;
+  }
 
   const myLives = state.lives?.[state.uid] ?? 3;
   const textEl = document.getElementById("reveal-result-text");
@@ -31,5 +40,11 @@ export function render(state) {
   } else {
     textEl.textContent = "Wrong answer.";
     hintEl.textContent = "Get ready — you'll need to survive the reflex trial.";
+  }
+
+  const roundNumber = state.public?.roundNumber;
+  if (announcedForRound !== roundNumber) {
+    announcedForRound = roundNumber;
+    if (gotItRight) playSuccess(); else playFail();
   }
 }

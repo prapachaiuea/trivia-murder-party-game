@@ -1,6 +1,7 @@
 import { getState } from "../state.js";
 import { submitMinigameResult } from "../actions.js";
 import { serverNow } from "../../shared/utils/timer.js";
+import { playSuccess, playFail } from "../../shared/audio.js";
 
 const REACTION_WINDOW_MS = 1200;
 const MIN_DELAY_MS = 1000;
@@ -45,6 +46,7 @@ function finish(result, message) {
   if (circle) circle.className = `tap-circle is-result-${result}`;
   const statusEl = document.getElementById("tap-status");
   if (statusEl) statusEl.textContent = message;
+  if (result === "pass") playSuccess(); else playFail();
   submitMinigameResult(result).catch(() => {});
 }
 
