@@ -180,8 +180,10 @@ function questionTensionBpm() {
 }
 
 const SCENES = {
-  ambient: () => startPad([110.0, 138.59, 164.81], { type: "sine", swell: 5 }), // A2-C#3-E3, dim game-show warmth
-  tension: () => startPulse([220.0, 246.94, 261.63, 329.63], { type: "triangle", getBpm: questionTensionBpm }),
+  // F2 clashing against F#2 a half-step away creates a fast, rough beating — genuinely
+  // "wrong" sounding rather than moody, which is what a horror game-show calls for.
+  ambient: () => startPad([87.31, 92.5, 130.81], { type: "triangle", swell: 8 }), // F2(clash)-F#2-C3
+  tension: () => startPulse([293.66, 415.3, 493.88, 587.33], { type: "sawtooth", getBpm: questionTensionBpm }), // D4-Ab4-B4-D5, tritone dread
   minigame: () => startPulse([293.66, 329.63, 349.23, 440.0], { type: "sawtooth", getBpm: () => 172 }),
 };
 
@@ -208,7 +210,7 @@ export function updateForState(state, { serverNow } = {}) {
   if (activePhase === lastPhase) return;
   lastPhase = activePhase;
 
-  if (activePhase === "final") playSting([146.83, 174.61, 220.0, 293.66], { duration: 2.0, type: "sine" }); // D3-F3-A3-D4
+  if (activePhase === "final") playSting([92.5, 110.0, 138.59, 185.0], { duration: 2.0, type: "sine" }); // F#2-A2-C#3-F#3
 
   const sceneKey = sceneKeyForPhase(activePhase);
   if (sceneKey !== currentSceneKey) {
