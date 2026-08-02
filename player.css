@@ -27,6 +27,22 @@ body {
 
 .menu-link:hover { opacity: 1; }
 
+.leave-link {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  color: #d97b85;
+  opacity: 0.85;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 0.4rem;
+}
+
+.leave-link:hover { opacity: 1; }
+
 .mute-toggle {
   background: none;
   border: none;
