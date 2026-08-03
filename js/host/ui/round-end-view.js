@@ -2,6 +2,7 @@ import { getState } from "../state.js";
 import { proceedAfterRoundEnd } from "../game.js";
 import { showToast } from "../../shared/components.js";
 import { renderCandle } from "./candle.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 
@@ -15,11 +16,13 @@ export function init() {
     try {
       await proceedAfterRoundEnd(roomId);
     } catch {
-      showToast("Could not continue.", true);
+      showToast(t("shared.toastContinueFailed"), true);
     } finally {
       e.target.disabled = false;
     }
   });
+
+  onLangChange(() => render(getState()));
 }
 
 export function render(state) {
@@ -40,5 +43,5 @@ export function render(state) {
 
   const btn = document.getElementById("btn-proceed");
   btn.hidden = false;
-  btn.textContent = alive.length <= 1 || outOfQuestions ? "See Final Results" : "Next Question";
+  btn.textContent = alive.length <= 1 || outOfQuestions ? t("roundEnd.seeFinal") : t("roundEnd.nextQuestion");
 }

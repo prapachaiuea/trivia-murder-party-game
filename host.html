@@ -12,28 +12,28 @@
 
   <header class="stage-header">
     <nav class="exit-nav">
-      <a class="exit-sign" href="index.html">Menu</a>
-      <a class="exit-sign exit-sign-home" href="https://prapachaiuea.github.io/party-games/">Home</a>
+      <a class="exit-sign" href="index.html" data-i18n="nav.menu">Menu</a>
+      <a class="exit-sign exit-sign-home" href="https://prapachaiuea.github.io/party-games/" data-i18n="nav.home">Home</a>
     </nav>
     <h1 class="wordmark">TRIVIA MURDER PARTY</h1>
-    <p class="room-code" id="room-code-display" hidden>Room <strong id="room-code-value"></strong></p>
-    <button id="btn-leave-room" type="button" class="exit-sign exit-sign-leave" hidden>Leave</button>
-    <button id="btn-mute-music" type="button" class="mute-toggle" aria-pressed="false" title="Toggle music">🔊</button>
+    <p class="room-code" id="room-code-display" hidden><span data-i18n="room.prefix">Room</span> <strong id="room-code-value"></strong></p>
+    <button id="btn-leave-room" type="button" class="exit-sign exit-sign-leave" hidden data-i18n="nav.leave">Leave</button>
+    <button id="btn-mute-music" type="button" class="mute-toggle" aria-pressed="false" data-i18n-title="mute.music" title="Toggle music">🔊</button>
   </header>
 
   <main id="app">
     <section id="view-setup" class="view">
-      <p class="stage-tagline">Answer wrong and you'll have to survive to stay in the game.</p>
-      <button id="btn-create-room" type="button" class="btn-primary">Open the Show</button>
+      <p class="stage-tagline" data-i18n="setup.tagline">Answer wrong and you'll have to survive to stay in the game.</p>
+      <button id="btn-create-room" type="button" class="btn-primary" data-i18n="setup.createRoom">Open the Show</button>
       <p class="error-text" id="setup-error" hidden></p>
     </section>
 
     <section id="view-lobby" class="view" hidden>
-      <p class="stage-instruction">Players join at <strong id="join-hint"></strong> using this code</p>
+      <p class="stage-instruction" id="lobby-instruction"></p>
       <div class="room-code-big" id="lobby-room-code"></div>
       <ul id="player-list" class="candle-row"></ul>
       <label class="rounds-picker">
-        Questions
+        <span data-i18n="lobby.questions">Questions</span>
         <select id="select-total-rounds">
           <option value="5">5</option>
           <option value="8" selected>8</option>
@@ -41,7 +41,7 @@
         </select>
       </label>
       <p id="lobby-hint" class="stage-hint"></p>
-      <button id="btn-start-game" type="button" class="btn-primary" hidden>Begin the Show</button>
+      <button id="btn-start-game" type="button" class="btn-primary" hidden data-i18n="lobby.startGame">Begin the Show</button>
     </section>
 
     <section id="view-question" class="view" hidden>
@@ -50,11 +50,11 @@
       <h2 class="question-text" id="question-text"></h2>
       <ol class="option-list" id="option-list"></ol>
       <ul id="question-status-list" class="chip-row"></ul>
-      <button id="btn-skip-question" type="button" class="btn-ghost">Everyone's Answered &mdash; Reveal</button>
+      <button id="btn-skip-question" type="button" class="btn-ghost" data-i18n="question.skip">Everyone's Answered &mdash; Reveal</button>
     </section>
 
     <section id="view-reveal" class="view" hidden>
-      <p class="stage-eyebrow">The correct answer was&hellip;</p>
+      <p class="stage-eyebrow" data-i18n="reveal.eyebrow">The correct answer was&hellip;</p>
       <h2 class="question-text" id="reveal-answer"></h2>
       <ul id="reveal-status-list" class="chip-row"></ul>
       <p class="stage-hint" id="reveal-hint"></p>
@@ -62,23 +62,23 @@
     </section>
 
     <section id="view-minigame" class="view" hidden>
-      <p class="stage-eyebrow">Survive&hellip; or else</p>
-      <h2 class="minigame-status" id="minigame-status">Get ready</h2>
+      <p class="stage-eyebrow" data-i18n="minigame.hostEyebrow">Survive&hellip; or else</p>
+      <h2 class="minigame-status" id="minigame-status" data-i18n="minigame.getReady">Get ready</h2>
       <ul id="minigame-status-list" class="chip-row"></ul>
       <button id="btn-reveal-fate" type="button" class="btn-primary"></button>
     </section>
 
     <section id="view-round-end" class="view" hidden>
-      <h2 class="section-title">Who's Still Breathing?</h2>
+      <h2 class="section-title" data-i18n="roundEnd.title">Who's Still Breathing?</h2>
       <ol id="candle-tally" class="candle-row candle-row-big"></ol>
       <button id="btn-proceed" type="button" class="btn-primary" hidden></button>
     </section>
 
     <section id="view-final" class="view" hidden>
-      <p class="stage-eyebrow">The Show Is Over</p>
+      <p class="stage-eyebrow" data-i18n="final.hostEyebrow">The Show Is Over</p>
       <h2 class="winner-name" id="winner-name"></h2>
       <ol id="final-candle-row" class="candle-row candle-row-big"></ol>
-      <button id="btn-new-game" type="button" class="btn-primary">New Show</button>
+      <button id="btn-new-game" type="button" class="btn-primary" data-i18n="final.newGame">New Show</button>
     </section>
   </main>
 

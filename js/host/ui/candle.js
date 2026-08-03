@@ -1,5 +1,7 @@
 // Shared by lobby/round-end/final views — one candle per player, snuffed out at 0 lives.
 // Player names are untrusted input, so this builds nodes directly rather than via innerHTML.
+import { t } from "../../shared/i18n.js";
+
 export function renderCandle(name, lives) {
   const li = document.createElement("li");
   li.className = `candle${lives <= 0 ? " is-out" : ""}`;
@@ -16,7 +18,7 @@ export function renderCandle(name, lives) {
 
   const livesEl = document.createElement("div");
   livesEl.className = "candle-lives";
-  livesEl.textContent = lives <= 0 ? "out" : "♥".repeat(lives);
+  livesEl.textContent = lives <= 0 ? t("candle.out") : "♥".repeat(lives);
 
   li.append(flame, wax, nameEl, livesEl);
   return li;

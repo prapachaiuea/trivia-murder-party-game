@@ -3,6 +3,7 @@ import { advanceToReveal } from "../game.js";
 import { loadTrivia } from "../../shared/trivia.js";
 import { serverNow, formatCountdown } from "../../shared/utils/timer.js";
 import { showToast } from "../../shared/components.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 let hasAutoAdvanced = false;
@@ -20,13 +21,14 @@ export function init() {
     try {
       await advanceToReveal(roomId);
     } catch {
-      showToast("Could not reveal the answer.", true);
+      showToast(t("question.toastRevealFailed"), true);
     } finally {
       e.target.disabled = false;
     }
   });
 
   setInterval(tick, 250);
+  onLangChange(() => render(getState()));
 }
 
 function tick() {
@@ -50,7 +52,7 @@ export function render(state) {
   }
 
   document.getElementById("question-round-number").textContent =
-    `Question ${state.public?.roundNumber ?? 1} of ${state.public?.totalRounds ?? 1}`;
+    t("question.roundNumber", { n: state.public?.roundNumber ?? 1, total: state.public?.totalRounds ?? 1 });
 
   const q = trivia[state.public?.questionIndex];
   document.getElementById("question-text").textContent = q ? q.question : "";

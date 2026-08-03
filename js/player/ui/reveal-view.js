@@ -1,5 +1,7 @@
+import { getState } from "../state.js";
 import { loadTrivia } from "../../shared/trivia.js";
 import { playSuccess, playFail } from "../../shared/audio.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 let trivia = [];
@@ -13,6 +15,7 @@ export function init() {
   if (initialized) return;
   initialized = true;
   loadTrivia().then((data) => { trivia = data; });
+  onLangChange(() => render(getState()));
 }
 
 export function render(state) {
@@ -26,8 +29,8 @@ export function render(state) {
   const hintEl = document.getElementById("reveal-result-hint");
 
   if (myLives <= 0) {
-    textEl.textContent = "You're out of lives.";
-    hintEl.textContent = "Watch the show as a spectator.";
+    textEl.textContent = t("shared.outOfLives");
+    hintEl.textContent = t("shared.watchSpectator");
     return;
   }
 
@@ -35,11 +38,11 @@ export function render(state) {
   const gotItRight = state.myAnswer === q?.correctIndex;
 
   if (gotItRight) {
-    textEl.textContent = "Correct! You're safe this round.";
-    hintEl.textContent = "Watch the others face the reflex trial.";
+    textEl.textContent = t("reveal.correctText");
+    hintEl.textContent = t("reveal.correctHint");
   } else {
-    textEl.textContent = "Wrong answer.";
-    hintEl.textContent = "Get ready — you'll need to survive the reflex trial.";
+    textEl.textContent = t("reveal.wrongText");
+    hintEl.textContent = t("reveal.wrongHint");
   }
 
   const roundNumber = state.public?.roundNumber;

@@ -10,52 +10,52 @@
 <body>
   <header class="seat-header">
     <nav class="exit-nav">
-      <a class="exit-sign" href="index.html">Menu</a>
-      <a class="exit-sign exit-sign-home" href="https://prapachaiuea.github.io/party-games/">Home</a>
+      <a class="exit-sign" href="index.html" data-i18n="nav.menu">Menu</a>
+      <a class="exit-sign exit-sign-home" href="https://prapachaiuea.github.io/party-games/" data-i18n="nav.home">Home</a>
     </nav>
     <h1 class="seat-wordmark">trivia murder party</h1>
-    <p class="room-code" id="room-code-display" hidden>Room <strong id="room-code-value"></strong></p>
-    <button id="btn-leave-room" type="button" class="exit-sign exit-sign-leave" hidden>Leave</button>
-    <button id="btn-mute-music" type="button" class="mute-toggle" aria-pressed="false" title="Toggle sound">🔊</button>
+    <p class="room-code" id="room-code-display" hidden><span data-i18n="room.prefix">Room</span> <strong id="room-code-value"></strong></p>
+    <button id="btn-leave-room" type="button" class="exit-sign exit-sign-leave" hidden data-i18n="nav.leave">Leave</button>
+    <button id="btn-mute-music" type="button" class="mute-toggle" aria-pressed="false" data-i18n-title="mute.sound" title="Toggle sound">🔊</button>
   </header>
 
   <main id="app">
     <section id="view-landing" class="view">
       <form id="form-landing">
         <label>
-          Your name
-          <input id="input-name" type="text" maxlength="20" required autocomplete="off" placeholder="e.g. Beam" />
+          <span data-i18n="player.yourName">Your name</span>
+          <input id="input-name" type="text" maxlength="20" required autocomplete="off" placeholder="e.g. Beam" data-i18n-placeholder="player.namePlaceholder" />
         </label>
-        <p id="landing-join-row" class="hint" hidden>Joining room <strong id="landing-room-code"></strong></p>
+        <p id="landing-join-row" class="hint" hidden></p>
         <div id="landing-code-row" class="field-code">
           <label>
-            Room code
+            <span data-i18n="player.roomCode">Room code</span>
             <input id="input-room-code" type="text" maxlength="5" autocomplete="off" placeholder="BLUE2" style="text-transform:uppercase" required />
           </label>
         </div>
-        <button type="submit" class="btn-seat">Take Your Seat</button>
+        <button type="submit" class="btn-seat" data-i18n="player.takeSeat">Take Your Seat</button>
       </form>
       <p class="error-text" id="landing-error" hidden></p>
     </section>
 
     <section id="view-lobby" class="view" hidden>
-      <p class="seat-status">You're seated. Waiting for the show to begin&hellip;</p>
+      <p class="seat-status" data-i18n="player.lobbyWaiting">You're seated. Waiting for the show to begin&hellip;</p>
       <ul id="player-list" class="chip-list"></ul>
     </section>
 
     <section id="view-question" class="view" hidden>
       <div id="question-active">
-        <p class="seat-eyebrow">Answer correctly, or gamble your life</p>
+        <p class="seat-eyebrow" data-i18n="question.eyebrow">Answer correctly, or gamble your life</p>
         <h2 class="question-text" id="my-question"></h2>
         <div class="answer-options" id="answer-options"></div>
       </div>
       <div id="question-answered" hidden>
-        <p class="seat-status">Answer locked in.</p>
-        <p class="seat-hint">Watch the big screen for the reveal.</p>
+        <p class="seat-status" data-i18n="question.answered">Answer locked in.</p>
+        <p class="seat-hint" data-i18n="question.watchReveal">Watch the big screen for the reveal.</p>
       </div>
       <div id="question-eliminated" hidden>
-        <p class="seat-status">You're out of lives.</p>
-        <p class="seat-hint">Watch the show as a spectator.</p>
+        <p class="seat-status" data-i18n="shared.outOfLives">You're out of lives.</p>
+        <p class="seat-hint" data-i18n="shared.watchSpectator">Watch the show as a spectator.</p>
       </div>
     </section>
 
@@ -66,31 +66,31 @@
 
     <section id="view-minigame" class="view" hidden>
       <div id="minigame-at-risk">
-        <p class="seat-eyebrow">Tap the circle the instant it turns green</p>
+        <p class="seat-eyebrow" data-i18n="minigame.eyebrow">Tap the circle the instant it turns green</p>
         <div class="tap-zone" id="tap-zone">
           <div class="tap-circle" id="tap-circle"></div>
         </div>
-        <p class="tap-status" id="tap-status">Get ready&hellip;</p>
+        <p class="tap-status" id="tap-status" data-i18n="minigame.getReady">Get ready&hellip;</p>
       </div>
       <div id="minigame-spectator" hidden>
-        <p class="seat-status">You answered correctly.</p>
-        <p class="seat-hint">Watch the others fight for their lives.</p>
+        <p class="seat-status" data-i18n="minigame.correctSafe">You answered correctly.</p>
+        <p class="seat-hint" data-i18n="minigame.watchOthers">Watch the others fight for their lives.</p>
       </div>
       <div id="minigame-eliminated" hidden>
-        <p class="seat-status">You're out of lives.</p>
-        <p class="seat-hint">Watch the show as a spectator.</p>
+        <p class="seat-status" data-i18n="shared.outOfLives">You're out of lives.</p>
+        <p class="seat-hint" data-i18n="shared.watchSpectator">Watch the show as a spectator.</p>
       </div>
     </section>
 
     <section id="view-round-end" class="view" hidden>
-      <p class="seat-status">Check the big screen for the tally.</p>
+      <p class="seat-status" data-i18n="roundEnd.checkScreen">Check the big screen for the tally.</p>
       <p class="my-lives" id="my-lives"></p>
     </section>
 
     <section id="view-final" class="view" hidden>
-      <p class="seat-eyebrow">The show is over</p>
+      <p class="seat-eyebrow" data-i18n="final.playerEyebrow">The show is over</p>
       <p class="my-lives" id="final-lives"></p>
-      <p class="seat-hint">Thanks for playing &mdash; look up for the final results.</p>
+      <p class="seat-hint" data-i18n="final.thanks">Thanks for playing &mdash; look up for the final results.</p>
     </section>
   </main>
 

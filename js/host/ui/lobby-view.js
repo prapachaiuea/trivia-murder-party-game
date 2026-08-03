@@ -2,6 +2,7 @@ import { getState } from "../state.js";
 import { startRound, setTotalRounds, MIN_PLAYERS, MAX_PLAYERS } from "../game.js";
 import { showToast } from "../../shared/components.js";
 import { renderCandle } from "./candle.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 
@@ -19,10 +20,10 @@ export function init() {
       await startRound(roomId);
     } catch (err) {
       const messages = {
-        NOT_ENOUGH_PLAYERS: `Need at least ${MIN_PLAYERS} players to start.`,
-        TOO_MANY_PLAYERS: `Max ${MAX_PLAYERS} players per room.`,
+        NOT_ENOUGH_PLAYERS: t("lobby.toastNotEnough", { min: MIN_PLAYERS }),
+        TOO_MANY_PLAYERS: t("lobby.toastTooMany", { max: MAX_PLAYERS }),
       };
-      showToast(messages[err.message] || "Could not start the game.", true);
+      showToast(messages[err.message] || t("lobby.toastStartFailed"), true);
     } finally {
       btnStart.disabled = false;
     }
@@ -33,16 +34,19 @@ export function init() {
     try {
       await setTotalRounds(roomId, Number(selectRounds.value));
     } catch {
-      showToast("Could not update question count.", true);
+      showToast(t("lobby.toastRoundsFailed"), true);
     }
   });
+
+  onLangChange(() => render(getState()));
 }
 
 export function render(state) {
   if (!state.roomId || state.phase !== "lobby") return;
 
   document.getElementById("lobby-room-code").textContent = state.roomId;
-  document.getElementById("join-hint").textContent = `${window.location.origin}${window.location.pathname.replace("host.html", "player.html")}`;
+  const joinLink = `${window.location.origin}${window.location.pathname.replace("host.html", "player.html")}`;
+  document.getElementById("lobby-instruction").textContent = t("lobby.instruction", { link: joinLink });
 
   const playerList = document.getElementById("player-list");
   const players = Object.entries(state.players || {});
@@ -61,12 +65,12 @@ export function render(state) {
   btnStart.hidden = false;
   if (count < MIN_PLAYERS) {
     btnStart.disabled = true;
-    hint.textContent = `Waiting for players (${count}/${MIN_PLAYERS} minimum)...`;
+    hint.textContent = t("lobby.hintWaiting", { count, min: MIN_PLAYERS });
   } else if (count > MAX_PLAYERS) {
     btnStart.disabled = true;
-    hint.textContent = `Too many players — max ${MAX_PLAYERS}.`;
+    hint.textContent = t("lobby.hintTooMany", { max: MAX_PLAYERS });
   } else {
     btnStart.disabled = false;
-    hint.textContent = `Ready! ${count} players in the room.`;
+    hint.textContent = t("lobby.hintReady", { count });
   }
 }

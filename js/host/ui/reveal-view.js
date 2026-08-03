@@ -2,6 +2,7 @@ import { getState } from "../state.js";
 import { startMinigame, skipMinigame } from "../game.js";
 import { loadTrivia } from "../../shared/trivia.js";
 import { showToast } from "../../shared/components.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 let trivia = [];
@@ -20,11 +21,13 @@ export function init() {
       if (hasAtRisk) await startMinigame(roomId);
       else await skipMinigame(roomId);
     } catch {
-      showToast("Could not continue.", true);
+      showToast(t("shared.toastContinueFailed"), true);
     } finally {
       e.target.disabled = false;
     }
   });
+
+  onLangChange(() => render(getState()));
 }
 
 export function render(state) {
@@ -47,9 +50,9 @@ export function render(state) {
 
   const hasAtRisk = Object.keys(atRiskUids).length > 0;
   document.getElementById("reveal-hint").textContent = hasAtRisk
-    ? "The wrong answers are about to face the reflex trial."
-    : "Everyone answered correctly — nobody's fate is on the line this round.";
+    ? t("reveal.hintAtRisk")
+    : t("reveal.hintSafe");
   document.getElementById("btn-start-minigame").textContent = hasAtRisk
-    ? "Start the Reflex Trial"
-    : "Continue";
+    ? t("reveal.startTrial")
+    : t("reveal.continue");
 }

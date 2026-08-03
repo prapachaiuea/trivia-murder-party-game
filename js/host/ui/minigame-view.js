@@ -2,6 +2,7 @@ import { getState } from "../state.js";
 import { revealFate, finishMinigameRound } from "../game.js";
 import { serverNow } from "../../shared/utils/timer.js";
 import { showToast } from "../../shared/components.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 
@@ -19,13 +20,14 @@ export function init() {
         await revealFate(roomId);
       }
     } catch {
-      showToast("Could not continue.", true);
+      showToast(t("shared.toastContinueFailed"), true);
     } finally {
       e.target.disabled = false;
     }
   });
 
   setInterval(tick, 250);
+  onLangChange(() => render(getState()));
 }
 
 function tick() {
@@ -37,7 +39,9 @@ function tick() {
   const startAt = state.public?.minigameStartAt;
   if (!startAt) return;
   const remaining = startAt - serverNow();
-  statusEl.textContent = remaining > 0 ? `Get ready… ${Math.ceil(remaining / 1000)}` : "Tap when you see green!";
+  statusEl.textContent = remaining > 0
+    ? t("minigame.getReadyCount", { n: Math.ceil(remaining / 1000) })
+    : t("minigame.tapNowStatus");
 }
 
 export function render(state) {
@@ -58,9 +62,9 @@ export function render(state) {
 
   const btn = document.getElementById("btn-reveal-fate");
   if (state.public?.fateRevealed) {
-    document.getElementById("minigame-status").textContent = "Fate decided.";
-    btn.textContent = "See the Tally";
+    document.getElementById("minigame-status").textContent = t("minigame.fateDecided");
+    btn.textContent = t("minigame.seeTally");
   } else {
-    btn.textContent = "Reveal Fate";
+    btn.textContent = t("minigame.revealFate");
   }
 }

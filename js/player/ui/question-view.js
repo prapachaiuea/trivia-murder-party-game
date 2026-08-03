@@ -2,6 +2,7 @@ import { getState } from "../state.js";
 import { submitAnswer } from "../actions.js";
 import { loadTrivia } from "../../shared/trivia.js";
 import { showToast } from "../../shared/components.js";
+import { t } from "../../shared/i18n.js";
 
 let initialized = false;
 let trivia = [];
@@ -53,7 +54,7 @@ export function render(state) {
       try {
         await submitAnswer(i);
       } catch {
-        showToast("Could not submit your answer — try again.", true);
+        showToast(t("question.toastAnswerFailed"), true);
         btn.disabled = false;
       }
     });

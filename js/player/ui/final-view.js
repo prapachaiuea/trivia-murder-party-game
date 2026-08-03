@@ -1,8 +1,12 @@
+import { getState } from "../state.js";
 import { playSuccess, playFail } from "../../shared/audio.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let announced = false;
 
-export function init() {}
+export function init() {
+  onLangChange(() => render(getState()));
+}
 
 export function render(state) {
   if (state.phase !== "final") {
@@ -11,7 +15,7 @@ export function render(state) {
   }
   const myLives = state.lives?.[state.uid] ?? 0;
   const el = document.getElementById("final-lives");
-  el.textContent = myLives > 0 ? `You survived with ${"♥".repeat(myLives)}` : "You didn't make it out.";
+  el.textContent = myLives > 0 ? t("final.survivedWith", { hearts: "♥".repeat(myLives) }) : t("final.didntMakeIt");
 
   if (!announced) {
     announced = true;

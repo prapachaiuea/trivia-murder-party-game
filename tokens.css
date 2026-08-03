@@ -38,3 +38,29 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Language toggle — present on every page, floating so it's reachable no matter the phase. */
+.lang-toggle {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: rgba(176, 141, 63, 0.08);
+  border: 1px solid rgba(176, 141, 63, 0.4);
+  border-radius: 3px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lang-toggle:hover {
+  opacity: 1;
+  border-color: var(--brass);
+  box-shadow: 0 0 8px rgba(176, 141, 63, 0.35);
+}

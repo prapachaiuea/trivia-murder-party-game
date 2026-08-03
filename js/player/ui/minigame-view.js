@@ -2,6 +2,7 @@ import { getState } from "../state.js";
 import { submitMinigameResult } from "../actions.js";
 import { serverNow } from "../../shared/utils/timer.js";
 import { playSuccess, playFail } from "../../shared/audio.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 const REACTION_WINDOW_MS = 1200;
 const MIN_DELAY_MS = 1000;
@@ -17,6 +18,7 @@ export function init() {
   initialized = true;
 
   document.getElementById("tap-zone").addEventListener("click", onTap);
+  onLangChange(() => render(getState()));
 }
 
 function clearScheduled() {
@@ -32,9 +34,9 @@ function schedule(fn, delay) {
 
 function onTap() {
   if (gameState === "red") {
-    finish("fail", "Too early!");
+    finish("fail", t("minigame.tooEarly"));
   } else if (gameState === "green") {
-    finish("pass", "You survived!");
+    finish("pass", t("minigame.survived"));
   }
 }
 
@@ -58,19 +60,19 @@ function startLocalGame(startAt) {
   const circle = document.getElementById("tap-circle");
   const statusEl = document.getElementById("tap-status");
   if (circle) circle.className = "tap-circle";
-  if (statusEl) statusEl.textContent = "Get ready…";
+  if (statusEl) statusEl.textContent = t("minigame.getReady");
 
   const waitMs = Math.max(0, startAt - serverNow());
   schedule(() => {
     gameState = "red";
-    if (statusEl) statusEl.textContent = "Wait for green…";
+    if (statusEl) statusEl.textContent = t("minigame.waitGreen");
     const delay = MIN_DELAY_MS + Math.random() * (MAX_DELAY_MS - MIN_DELAY_MS);
     schedule(() => {
       gameState = "green";
       if (circle) circle.classList.add("is-go");
-      if (statusEl) statusEl.textContent = "TAP NOW!";
+      if (statusEl) statusEl.textContent = t("minigame.tapNow");
       schedule(() => {
-        if (gameState === "green") finish("fail", "Too slow!");
+        if (gameState === "green") finish("fail", t("minigame.tooSlow"));
       }, REACTION_WINDOW_MS);
     }, delay);
   }, waitMs);
