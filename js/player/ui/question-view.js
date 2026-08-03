@@ -2,7 +2,7 @@ import { getState } from "../state.js";
 import { submitAnswer } from "../actions.js";
 import { loadTrivia } from "../../shared/trivia.js";
 import { showToast } from "../../shared/components.js";
-import { t } from "../../shared/i18n.js";
+import { t, onLangChange } from "../../shared/i18n.js";
 
 let initialized = false;
 let trivia = [];
@@ -12,6 +12,10 @@ export function init() {
   if (initialized) return;
   initialized = true;
   loadTrivia().then((data) => { trivia = data; });
+  onLangChange(async () => {
+    trivia = await loadTrivia();
+    render(getState());
+  });
 }
 
 export function render(state) {

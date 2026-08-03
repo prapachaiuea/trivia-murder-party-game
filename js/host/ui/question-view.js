@@ -28,7 +28,10 @@ export function init() {
   });
 
   setInterval(tick, 250);
-  onLangChange(() => render(getState()));
+  onLangChange(async () => {
+    trivia = await loadTrivia();
+    render(getState());
+  });
 }
 
 function tick() {

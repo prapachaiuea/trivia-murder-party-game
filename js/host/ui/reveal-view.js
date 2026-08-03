@@ -27,7 +27,10 @@ export function init() {
     }
   });
 
-  onLangChange(() => render(getState()));
+  onLangChange(async () => {
+    trivia = await loadTrivia();
+    render(getState());
+  });
 }
 
 export function render(state) {

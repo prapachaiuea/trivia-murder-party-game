@@ -15,7 +15,10 @@ export function init() {
   if (initialized) return;
   initialized = true;
   loadTrivia().then((data) => { trivia = data; });
-  onLangChange(() => render(getState()));
+  onLangChange(async () => {
+    trivia = await loadTrivia();
+    render(getState());
+  });
 }
 
 export function render(state) {
