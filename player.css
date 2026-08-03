@@ -14,34 +14,50 @@ body {
   text-align: center;
 }
 
-.menu-link {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 500;
+.exit-nav {
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.exit-sign {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--bone);
-  opacity: 0.4;
+  background: rgba(176, 141, 63, 0.08);
+  border: 1px solid rgba(176, 141, 63, 0.4);
+  border-radius: 3px;
+  padding: 0.28rem 0.55rem;
   text-decoration: none;
-  margin-bottom: 0.4rem;
-}
-
-.menu-link:hover { opacity: 1; }
-
-.leave-link {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 500;
-  background: none;
-  border: none;
-  color: #d97b85;
-  opacity: 0.85;
-  text-decoration: underline;
   cursor: pointer;
-  margin-bottom: 0.4rem;
+  opacity: 0.75;
+  transition: opacity 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.leave-link:hover { opacity: 1; }
+.exit-sign:hover {
+  opacity: 1;
+  border-color: var(--brass);
+  box-shadow: 0 0 8px rgba(176, 141, 63, 0.35);
+}
+
+.exit-sign-home:hover {
+  border-color: var(--brass);
+  color: var(--brass);
+}
+
+.exit-sign-leave {
+  color: #d97b85;
+  border-color: rgba(217, 123, 133, 0.4);
+  margin-bottom: 0.4rem;
+}
+.exit-sign-leave:hover {
+  border-color: #d97b85;
+  box-shadow: 0 0 8px rgba(217, 123, 133, 0.35);
+}
 
 .mute-toggle {
   background: none;

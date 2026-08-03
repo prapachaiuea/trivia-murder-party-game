@@ -18,20 +18,26 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.4rem 1rem;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.55);
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
   color: var(--bone);
+  background: rgba(13, 11, 14, 0.7);
+  border: 1px solid rgba(176, 141, 63, 0.4);
+  border-radius: 3px;
   text-decoration: none;
-  opacity: 0.75;
+  opacity: 0.8;
+  transition: opacity 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .back-home-pill:hover {
   opacity: 1;
-  color: var(--brass);
+  border-color: var(--brass);
+  box-shadow: 0 0 8px rgba(176, 141, 63, 0.35);
 }
 
 .panel {
