@@ -66,11 +66,50 @@
 
     <section id="view-minigame" class="view" hidden>
       <div id="minigame-at-risk">
-        <p class="seat-eyebrow" data-i18n="minigame.eyebrow">Tap the circle the instant it turns green</p>
-        <div class="tap-zone" id="tap-zone">
-          <div class="tap-circle" id="tap-circle"></div>
+        <p class="seat-eyebrow" id="minigame-eyebrow"></p>
+
+        <div id="mg-reflex" class="mg-panel" hidden>
+          <div class="tap-zone" id="tap-zone">
+            <div class="tap-circle" id="tap-circle"></div>
+          </div>
         </div>
-        <p class="tap-status" id="tap-status" data-i18n="minigame.getReady">Get ready&hellip;</p>
+
+        <div id="mg-triple" class="mg-panel" hidden>
+          <div class="tap-zone" id="triple-tap-zone">
+            <div class="tap-circle" id="triple-tap-circle"></div>
+          </div>
+          <p class="mg-progress" id="triple-progress"></p>
+        </div>
+
+        <div id="mg-needle" class="mg-panel" hidden>
+          <div class="needle-track">
+            <div class="needle-center-zone"></div>
+            <div class="needle-dot" id="needle-dot"></div>
+          </div>
+          <button type="button" class="btn-seat" id="needle-tap-btn" data-i18n="minigame.stopButton">Stop</button>
+        </div>
+
+        <div id="mg-countdown" class="mg-panel" hidden>
+          <p class="mg-big-number" id="countdown-display">?</p>
+          <button type="button" class="btn-seat" id="countdown-btn"></button>
+        </div>
+
+        <div id="mg-mash" class="mg-panel" hidden>
+          <p class="mg-big-number" id="mash-count">0</p>
+          <button type="button" class="btn-seat btn-mash" id="mash-btn" data-i18n="minigame.mashButton">MASH!</button>
+        </div>
+
+        <div id="mg-memory" class="mg-panel" hidden>
+          <div class="memory-grid" id="memory-grid">
+            <button type="button" class="memory-tile" data-tile="0"></button>
+            <button type="button" class="memory-tile" data-tile="1"></button>
+            <button type="button" class="memory-tile" data-tile="2"></button>
+            <button type="button" class="memory-tile" data-tile="3"></button>
+          </div>
+          <p class="mg-progress" id="memory-progress"></p>
+        </div>
+
+        <p class="tap-status" id="tap-status"></p>
       </div>
       <div id="minigame-spectator" hidden>
         <p class="seat-status" data-i18n="minigame.correctSafe">You answered correctly.</p>

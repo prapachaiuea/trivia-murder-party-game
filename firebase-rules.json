@@ -32,7 +32,7 @@
           ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('public/host').val()",
           "$uid": {
             ".read": "auth != null && (auth.uid === $uid || auth.uid === root.child('rooms').child($roomId).child('public/host').val())",
-            ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('public/phase').val() === 'minigame' && root.child('rooms').child($roomId).child('public/atRiskUids').child($uid).val() === true && (newData.val() === 'pass' || newData.val() === 'fail')"
+            ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('public/phase').val() === 'minigame' && root.child('rooms').child($roomId).child('public/atRiskUids').child($uid).val() === true && (newData.child('outcome').val() === 'pass' || newData.child('outcome').val() === 'fail') && newData.child('score').isNumber()"
           }
         }
       }

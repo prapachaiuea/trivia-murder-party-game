@@ -10,7 +10,20 @@ export const MAX_PLAYERS = 10;
 export const STARTING_LIVES = 3;
 export const QUESTION_DURATION_MS = 15000;
 export const MINIGAME_GO_DELAY_MS = 3000;
-export const MINIGAME_WINDOW_MS = 7000;
+
+// Every trial type shares the same fate-decision rule (see computeMinigameLosers below) —
+// only how each player's own outcome/score gets produced differs, over in the player view.
+export const MINIGAME_TYPES = ["reflex", "triple", "needle", "countdown", "mash", "memory"];
+export const MEMORY_SEQUENCE_LENGTH = 5;
+export const MEMORY_TILE_COUNT = 4;
+const MINIGAME_DURATION_MS = {
+  reflex: 7000,
+  triple: 18000,
+  needle: 9500,
+  countdown: 16000,
+  mash: 8000,
+  memory: 13500,
+};
 
 function alivePlayerUids(players, lives) {
   return Object.keys(players).filter((uid) => (lives[uid] ?? STARTING_LIVES) > 0);
@@ -48,6 +61,8 @@ export async function startRound(roomId) {
     usedQuestionIndices: [...used, questionIndex],
     atRiskUids: null,
     minigameStartAt: null,
+    minigameType: null,
+    minigameSeq: null,
     timer: { startAt: Date.now(), durationMs: QUESTION_DURATION_MS },
   });
 }
@@ -74,11 +89,19 @@ export async function advanceToReveal(roomId) {
 
 export async function startMinigame(roomId) {
   await set(ref(db, `rooms/${roomId}/minigameResults`), null);
+  const type = MINIGAME_TYPES[Math.floor(Math.random() * MINIGAME_TYPES.length)];
   const startAt = serverNow() + MINIGAME_GO_DELAY_MS;
+
   await update(ref(db, `rooms/${roomId}/public`), {
     phase: "minigame",
+    minigameType: type,
+    // Generated host-side and broadcast so every player memorizes and gets tested on the
+    // exact same sequence — otherwise the "memory" trial wouldn't be a fair comparison.
+    minigameSeq: type === "memory"
+      ? Array.from({ length: MEMORY_SEQUENCE_LENGTH }, () => Math.floor(Math.random() * MEMORY_TILE_COUNT))
+      : null,
     minigameStartAt: startAt,
-    timer: { startAt, durationMs: MINIGAME_WINDOW_MS },
+    timer: { startAt, durationMs: MINIGAME_DURATION_MS[type] },
   });
 }
 
@@ -88,15 +111,43 @@ export async function skipMinigame(roomId) {
   await update(ref(db, `rooms/${roomId}/public`), { phase: "round-end", timer: null });
 }
 
+// Each player submits { outcome: "pass" | "fail", score }, where a lower score is always the
+// better performance. Anyone who outright fails their own attempt (tapped early, never
+// engaged, ran out the clock) loses a life no matter what anyone else did. On top of that,
+// once there are 2+ people who *did* complete a valid attempt, the single worst-scoring one
+// among them also loses — that's what guarantees someone's fate gets decided even when
+// everybody technically "passes" the individual trial, instead of everyone surviving together.
+// A lone successful attempt is never punished this way since there's nobody worse to compare
+// it against.
+export function computeMinigameLosers(atRiskUids, minigameResults) {
+  const results = minigameResults || {};
+  const losers = new Set();
+
+  atRiskUids.forEach((uid) => {
+    const r = results[uid];
+    if (!r || r.outcome !== "pass") losers.add(uid);
+  });
+
+  const survivors = atRiskUids.filter((uid) => results[uid]?.outcome === "pass");
+  if (survivors.length >= 2) {
+    let worstUid = survivors[0];
+    survivors.forEach((uid) => {
+      if (results[uid].score > results[worstUid].score) worstUid = uid;
+    });
+    losers.add(worstUid);
+  }
+
+  return losers;
+}
+
 export async function revealFate(roomId) {
   const { public: pub, lives, minigameResults } = getState();
   const atRisk = Object.keys(pub.atRiskUids || {});
+  const losers = computeMinigameLosers(atRisk, minigameResults);
 
   const lifeUpdates = {};
-  atRisk.forEach((uid) => {
-    if (minigameResults[uid] !== "pass") {
-      lifeUpdates[`rooms/${roomId}/lives/${uid}`] = Math.max(0, (lives[uid] ?? 0) - 1);
-    }
+  losers.forEach((uid) => {
+    lifeUpdates[`rooms/${roomId}/lives/${uid}`] = Math.max(0, (lives[uid] ?? 0) - 1);
   });
 
   if (Object.keys(lifeUpdates).length > 0) await update(ref(db), lifeUpdates);
@@ -140,6 +191,8 @@ export async function backToLobby(roomId) {
     atRiskUids: null,
     timer: null,
     minigameStartAt: null,
+    minigameType: null,
+    minigameSeq: null,
     fateRevealed: false,
   });
 }

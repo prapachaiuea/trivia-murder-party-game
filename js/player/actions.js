@@ -7,7 +7,7 @@ export async function submitAnswer(choiceIndex) {
   await set(ref(db, `rooms/${roomId}/answers/${uid}`), choiceIndex);
 }
 
-export async function submitMinigameResult(result) {
+export async function submitMinigameResult(outcome, score) {
   const { roomId, uid } = getState();
-  await set(ref(db, `rooms/${roomId}/minigameResults/${uid}`), result);
+  await set(ref(db, `rooms/${roomId}/minigameResults/${uid}`), { outcome, score });
 }
